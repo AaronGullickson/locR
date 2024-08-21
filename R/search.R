@@ -29,6 +29,55 @@ loc_count_state_year <- function(query, year_start = 1756, year_end = 1963,
   return(full_count)
 }
 
+#' Retrieve all items from a *Chronicling America* search
+#'
+#' @description
+#' Retrieve all items from a *Chronicling America* search and place them into a
+#' [tibble] dataset.
+#'
+#' @details
+#'
+#' It is best to use year restrictions and/or facets to reduce the total volume
+#' of the search. Searches with more than 100,000 total items will likely be
+#' refused by the API. It is also generally useful to increase the `items_page`
+#' parameter from its default of 20 to reduce the problem of "deep paging"
+#' across results and reduce the overall number of requests. The `items_page`
+#' cannot be larger than 1000. A value of 500 often works well.
+#'
+#' The returned results from the json are formatted into a `tibble` with only
+#' the following values:
+#'
+#' * item url
+#' * date
+#' * publisher
+#' * location: county, state, and year
+#' * text snippet
+#'
+#' Users who want different values will returned would need to adjust the
+#' internal function `process_row` which does this work.
+#'
+#' @param query Either a character string or a vector of character strings used
+#' to search pages. The format here should be identical to [create_basic_loc_request].
+#'
+#' @param year_start An integer giving the starting year for the search. If not
+#' provided, defaults to earliest date of 1756.
+#'
+#' @param year_end An integer giving the ending year for the search. If not
+#' provided, defaults to latest date of 1963.
+#'
+#' @param facets A set of facets to further restrict the search, as defined in [add_facets].
+#'
+#' @param ... Additional parameters that are passed on to [create_basic_loc_request].
+#'
+#' @returns a [tibble] of items, with one item per row.
+#'
+#' @examples
+#'
+#' loc_search_pages("banana", year_start = 1910, year_end = 1915,
+#'                  facets = c(location_state = "florida", language = "english"),
+#'                  items_page = 500)
+#'
+#' @export
 loc_search_pages <- function(query, year_start = 1756, year_end = 1963,
                              facets = NULL, ...) {
 

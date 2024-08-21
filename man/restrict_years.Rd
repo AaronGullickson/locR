@@ -2,7 +2,7 @@
 % Please edit documentation in R/search.R
 \name{restrict_years}
 \alias{restrict_years}
-\title{Restrict years for a *Chronicling America API request}
+\title{Restrict years for a \emph{Chronicling America} API request}
 \usage{
 restrict_years(req, year_start, year_end)
 }

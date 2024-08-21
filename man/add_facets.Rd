@@ -2,7 +2,7 @@
 % Please edit documentation in R/search.R
 \name{add_facets}
 \alias{add_facets}
-\title{Add facets to a *Chronicling America API request}
+\title{Add facets to a \emph{Chronicling America} API request}
 \usage{
 add_facets(req, facets)
 }
