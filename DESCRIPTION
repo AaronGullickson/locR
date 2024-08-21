@@ -17,3 +17,5 @@ Imports:
     httr2,
     purrr,
     tibble
+URL: https://github.com/AaronGullickson/locR
+BugReports: https://github.com/AaronGullickson/locR/issues
