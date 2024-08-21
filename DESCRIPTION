@@ -1,12 +1,14 @@
 Package: locR
-Title: What the Package Does (One Line, Title Case)
+Title: Retrieve Data from Library of Congress Chronicling America API
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("Aaron", "Gullickson", , "aarongullickson@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-7237-8131"))
+Description: This package contains a set of functions to read data from the 
+     Chronicling America dataset of the Library of Congress via its public
+     API. The functions are custom built for my own purposes and may or may
+     not be useful to others.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
