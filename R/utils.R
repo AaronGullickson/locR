@@ -1,6 +1,6 @@
 BASE_URL <- "https://www.loc.gov"
 
-STATES <- c("alabama", "alaska", "arizona", "arkansas", "california", 
+STATES <- c("alabama", "alaska", "arizona", "arkansas", "california",
             "colorado", "connecticut", "delaware", "district of columbia",
             "florida", "georgia", "hawaii", "idaho", "illinois", "indiana",
             "iowa", "kansas", "kentucky", "louisiana", "maine", "maryland",
@@ -14,13 +14,13 @@ STATES <- c("alabama", "alaska", "arizona", "arkansas", "california",
 
 # process a list of results from the json into a tibble
 process_results <- function(r) {
-  map(r, process_row) |>
-    bind_rows()
+  purrr::map(r, process_row) |>
+    dplyr::bind_rows()
 }
 
-# process a single row of results from the json 
+# process a single row of results from the json
 process_row <- function(row) {
-  
+
   county <- NA
   if(length(row$location_county) > 0) {
     county <- row$location_county[[1]]
@@ -33,9 +33,9 @@ process_row <- function(row) {
   if(length(row$location_country) > 0) {
     country <- row$location_country[[1]]
   }
-  
-  tibble(item_url = row$id, 
-         date = row$date, 
+
+  tibble::tibble(item_url = row$id,
+         date = row$date,
          publication = combine_list(row$partof_title),
          languages = combine_list(row$language),
          county = county,
