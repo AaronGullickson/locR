@@ -2,5 +2,6 @@
 
 export(add_facets)
 export(create_basic_loc_request)
+export(loc_count_state_year)
 export(loc_search_pages)
 export(restrict_years)

@@ -1,3 +1,40 @@
+#' Count frequency of a word from a *Chronicling America* search
+#'
+#' @description
+#' Count frequency of a word from a *Chronicling America* search across states
+#' and years.
+#'
+#' @details
+#'
+#' This function will simply count the frequency (number of results) for a given
+#' search across states and years, returning a [tibble] of those frequencies.
+#' If the user would prefer to get actual search items, they should use [loc_search_pages]
+#' instead.
+#'
+#' Currently, the function only counts across the 50 states of the US and the
+#' District of Columbia.
+#'
+#' @param query Either a character string or a vector of character strings used
+#' to search pages. The format here should be identical to [create_basic_loc_request].
+#'
+#' @param year_start An integer giving the starting year for the search. If not
+#' provided, defaults to earliest date of 1756.
+#'
+#' @param year_end An integer giving the ending year for the search. If not
+#' provided, defaults to latest date of 1963.
+#'
+#' @param facets A set of facets to further restrict the search, as defined in [add_facets].
+#'
+#' @param ... Additional parameters that are passed on to [create_basic_loc_request].
+#'
+#' @returns a [tibble] giving the state, year, and frequency.
+#'
+#' @examples
+#'
+#' loc_count_state_year("banana", year_start = 1910, year_end = 1915,
+#'                  facets = c(language = "english"), items_page = 5)
+#'
+#' @export
 loc_count_state_year <- function(query, year_start = 1756, year_end = 1963,
                                  facets = NULL, ...) {
 
@@ -44,7 +81,7 @@ loc_count_state_year <- function(query, year_start = 1756, year_end = 1963,
 #' across results and reduce the overall number of requests. The `items_page`
 #' cannot be larger than 1000. A value of 500 often works well.
 #'
-#' The returned results from the json are formatted into a `tibble` with only
+#' The returned results from the json are formatted into a [tibble] with only
 #' the following values:
 #'
 #' * item url

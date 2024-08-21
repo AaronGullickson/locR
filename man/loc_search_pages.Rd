@@ -35,7 +35,7 @@ parameter from its default of 20 to reduce the problem of "deep paging"
 across results and reduce the overall number of requests. The \code{items_page}
 cannot be larger than 1000. A value of 500 often works well.
 
-The returned results from the json are formatted into a \code{tibble} with only
+The returned results from the json are formatted into a \link{tibble} with only
 the following values:
 \itemize{
 \item item url
@@ -50,7 +50,7 @@ internal function \code{process_row} which does this work.
 }
 \examples{
 
-loc_search_pages("banana", year_start = 1900, year_end = 1920,
+loc_search_pages("banana", year_start = 1910, year_end = 1915,
                  facets = c(location_state = "florida", language = "english"),
                  items_page = 500)
 
