@@ -1,7 +1,7 @@
 loc_count_state_year <- function(query, year_start = 1756, year_end = 1963,
                                  facets = NULL, ...) {
 
-  req <- create_basic_request(query, ...) |>
+  req <- create_basic_loc_request(query, ...) |>
     httr2::req_url_query(at = "pagination")
 
   full_count <- NULL
@@ -32,7 +32,7 @@ loc_count_state_year <- function(query, year_start = 1756, year_end = 1963,
 loc_search_pages <- function(query, year_start = 1756, year_end = 1963,
                              facets = NULL, ...) {
 
-  req <- create_basic_request(query, ...) |>
+  req <- create_basic_loc_request(query, ...) |>
     add_facets(facets) |>
     restrict_years(year_start, year_end)
 
@@ -123,11 +123,11 @@ loc_search_pages <- function(query, year_start = 1756, year_end = 1963,
 #' @returns An [httr2] request that can be further modified.
 #'
 #' @export
-create_basic_request <- function(query,
-                                 items_page = 20,
-                                 combine_type = "OR",
-                                 throttle_rate = 80 / 60,
-                                 retries = 10) {
+create_basic_loc_request <- function(query,
+                                     items_page = 20,
+                                     combine_type = "OR",
+                                     throttle_rate = 80 / 60,
+                                     retries = 10) {
 
   req <- httr2::request(BASE_URL) |>
     httr2::req_url_path(c("collections/chronicling-america/")) |>
