@@ -86,8 +86,8 @@ loc_search_pages <- function(query, year_start = 1756, year_end = 1963,
 #'
 #' @description
 #'
-#' Produce a [httr2] request to the *Chronicling America* API that can then be
-#' further modified before processing.
+#' Produce an [httr2] request to the *Chronicling America* API that can then be
+#' further modified before being sent.
 #'
 #' @details
 #'
@@ -110,17 +110,17 @@ loc_search_pages <- function(query, year_start = 1756, year_end = 1963,
 #' default is 20, but for large searches, it will be more efficient to put
 #' more items on a single page. This value should never exceed 1000.
 #'
-#' @param combine_type A character string equaling "OR", "AND", or "Phrase". When
+#' @param combine_type A character string equaling "OR", "AND", or "PHRASE". When
 #' searching multiple words, this argument identifies whether to search for any
 #' of them ("OR"), all of them ("AND") or the exact phrase ("PHRASE").
 #'
 #' @param throttle_rate The throttle rate as searches per second. The default
-#' uses `80 / 60` which is the specified crawl rate for collections.
+#' uses `80/60` which is the specified crawl rate for collections.
 #'
 #' @param retries The number of retries to attempt when the search fails because
 #' of an error.
 #'
-#' @returns An [httr2] request that can be further modified.
+#' @returns An [httr2] request that can be further modified or sent.
 #'
 #' @export
 create_basic_loc_request <- function(query,
@@ -147,6 +147,33 @@ create_basic_loc_request <- function(query,
   return(req)
 }
 
+#' Add facets to a *Chronicling America* API request
+#'
+#' @description
+#'
+#' This function is meant to be applied to the result of a [create_basic_loc_request]
+#' call. It will add "facets" that further restrict the search (e.g. by language,
+#' location, subject, etc.)
+#'
+#' @details
+#'
+#' See [here](https://www.loc.gov/apis/json-and-yaml/requests/parameters/) for
+#' details on available facets and their syntax.
+#'
+#' This function is designed to be used in a pipe.
+#'
+#' @param req An [httr2] request, typically created using [create_basic_loc_request].
+#'
+#' @param facets A vector of named character string. The name should provide the
+#' facet name and the character string should indicate the value.
+#'
+#' @returns An [httr2] request that can be further modified or sent.
+#'
+#' @examples
+#' create_basic_loc_request("banana") |>
+#'    add_facets(c(location_state = "florida", language = "english"))
+#'
+#' @export
 add_facets <- function(req, facets) {
   if (is.null(facets)) {
     return(req)
@@ -156,6 +183,34 @@ add_facets <- function(req, facets) {
                                     collapse = "|"))
 }
 
+#' Restrict years for a *Chronicling America* API request
+#'
+#' @description
+#'
+#' This function is meant to be applied to the result of a [create_basic_loc_request]
+#' call, by restricting the years of the search.
+#'
+#' @details
+#'
+#' This function uses the format `?dates=year_start/year_end` to restrict by
+#' years. There are also API parameters for exact start and end dates that are
+#' not used here.
+#'
+#' This function is designed to be used in a pipe.
+#'
+#' @param req An [httr2] request, typically created using [create_basic_loc_request].
+#'
+#' @param year_start An integer giving the starting year for the search.
+#'
+#'@param year_end An integer giving the end year for the search.
+#'
+#' @returns An [httr2] request that can be further modified or sent.
+#'
+#' @examples
+#' create_basic_loc_request("banana") |>
+#'    restrict_years(1912, 1917)
+#'
+#' @export
 restrict_years <- function(req, year_start, year_end) {
   req |>
     httr2::req_url_query(dates = paste(year_start, year_end, sep = "/"))

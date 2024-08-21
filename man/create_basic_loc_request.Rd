@@ -21,22 +21,22 @@ a single character string or providing a vector of character strings.}
 default is 20, but for large searches, it will be more efficient to put
 more items on a single page. This value should never exceed 1000.}
 
-\item{combine_type}{A character string equaling "OR", "AND", or "Phrase". When
+\item{combine_type}{A character string equaling "OR", "AND", or "PHRASE". When
 searching multiple words, this argument identifies whether to search for any
 of them ("OR"), all of them ("AND") or the exact phrase ("PHRASE").}
 
 \item{throttle_rate}{The throttle rate as searches per second. The default
-uses \code{80 / 60} which is the specified crawl rate for collections.}
+uses \code{80/60} which is the specified crawl rate for collections.}
 
 \item{retries}{The number of retries to attempt when the search fails because
 of an error.}
 }
 \value{
-An \link{httr2} request that can be further modified.
+An \link{httr2} request that can be further modified or sent.
 }
 \description{
-Produce a \link{httr2} request to the \emph{Chronicling America} API that can then be
-further modified before processing.
+Produce an \link{httr2} request to the \emph{Chronicling America} API that can then be
+further modified before being sent.
 }
 \details{
 See \href{https://www.loc.gov/apis/json-and-yaml/}{here} for more information
