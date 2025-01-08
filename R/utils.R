@@ -41,11 +41,22 @@ process_row <- function(row) {
          county = county,
          state = state,
          country = country,
-         text = row$page_coordinate_data$relevant_snippet)
+         text = retrieve_snippet(row$word_coordinates_url))
 }
 
 # collapse a list of character strings into a single comma separated
 # character string
 combine_list <- function(x) {
   paste(x, collapse = ", ")
+}
+
+# retrieve the snippet from the URL provided in the response
+retrieve_snippet <- function(url) {
+
+  response <- httr2::request(url) |>
+    httr2::req_perform() |>
+    httr2::resp_body_json()
+
+  return(response[[1]]$relevant_snippet)
+
 }
