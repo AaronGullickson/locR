@@ -38,6 +38,9 @@ This function will simply count the frequency (number of results) for a given
 search across states and years, returning a \link{tibble} of those frequencies.
 If the user would prefer to get actual search items, they should use \link{loc_search_pages}
 instead.
+
+Currently, the function only counts across the 50 states of the US and the
+District of Columbia.
 }
 \examples{
 
