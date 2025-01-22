@@ -19,7 +19,7 @@ process_results <- function(r) {
 }
 
 # process a single row of results from the json
-process_row <- function(row) {
+process_row <- function(row, ...) {
 
   county <- NA
   if(length(row$location_county) > 0) {
@@ -55,7 +55,11 @@ retrieve_snippet <- function(url) {
 
   response <- httr2::request(url) |>
     httr2::req_perform() |>
-    httr2::resp_body_json()
+    httr2::resp_body_json() |>
+    httr2::req_retry(max_tries = 30,
+                     is_transient = \(resp) httr2::resp_status(resp)
+                     %in% c(429, 500, 502, 503, 520, 522)) |>
+    httr2::req_throttle(rate = 80 / 60)
 
   return(response[[1]]$relevant_snippet)
 
