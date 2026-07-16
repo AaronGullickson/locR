@@ -2,13 +2,13 @@
 % Please edit documentation in R/search.R
 \name{create_basic_loc_request}
 \alias{create_basic_loc_request}
-\title{Create a basic \link{httr2} query request to the \emph{Chronicling America} API}
+\title{Create a basic \link[httr2:httr2-package]{httr2::httr2} query request to the \emph{Chronicling America} API}
 \usage{
 create_basic_loc_request(
   query,
   items_page = 20,
   combine_type = "OR",
-  throttle_rate = 80/60,
+  throttle_rate = 20/60,
   retries = 10
 )
 }
@@ -32,10 +32,10 @@ uses \code{80/60} which is the specified crawl rate for collections.}
 of an error.}
 }
 \value{
-An \link{httr2} request that can be further modified or sent.
+An \link[httr2:httr2-package]{httr2::httr2} request that can be further modified or sent.
 }
 \description{
-Produce an \link{httr2} request to the \emph{Chronicling America} API that can then be
+Produce an \link[httr2:httr2-package]{httr2::httr2} request to the \emph{Chronicling America} API that can then be
 further modified before being sent.
 }
 \details{

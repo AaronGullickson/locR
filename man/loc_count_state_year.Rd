@@ -27,7 +27,7 @@ provided, defaults to latest date of 1963.}
 \item{...}{Additional parameters that are passed on to \link{create_basic_loc_request}.}
 }
 \value{
-a \link{tibble} giving the state, year, and frequency.
+a \link[tibble:tibble]{tibble::tibble} giving the state, year, and frequency.
 }
 \description{
 Count frequency of a word from a \emph{Chronicling America} search across states
@@ -35,7 +35,7 @@ and years.
 }
 \details{
 This function will simply count the frequency (number of results) for a given
-search across states and years, returning a \link{tibble} of those frequencies.
+search across states and years, returning a \link[tibble:tibble]{tibble::tibble} of those frequencies.
 If the user would prefer to get actual search items, they should use \link{loc_search_pages}
 instead.
 

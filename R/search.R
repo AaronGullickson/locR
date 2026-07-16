@@ -342,7 +342,7 @@ create_basic_loc_request <- function(query,
     httr2::req_retry(
       max_tries = retries,
       is_transient = \(resp) httr2::resp_status(resp) %in% TRANSIENT_CODES,
-      retry_on_error = TRUE
+      retry_on_failure = TRUE
     ) |>
     httr2::req_throttle(rate = throttle_rate)
 

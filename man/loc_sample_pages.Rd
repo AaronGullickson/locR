@@ -34,11 +34,11 @@ Users should not pass the \code{items_page} parameter as this is defined by the
 sampling procedure as 1.}
 }
 \value{
-a \link{tibble} of items, with one item per row.
+a \link[tibble:tibble]{tibble::tibble} of items, with one item per row.
 }
 \description{
 Sample all items from a \emph{Chronicling America} search, stratified by year, and
-place them into a \link{tibble} dataset.
+place them into a \link[tibble:tibble]{tibble::tibble} dataset.
 }
 \details{
 For very large searches, this function will sample the full results including
@@ -50,7 +50,7 @@ It is best to use year restrictions and/or facets to reduce the total volume
 of the search. Searches with more than 100,000 total items will likely be
 refused by the API.
 
-The returned results from the json are formatted into a \link{tibble} with only
+The returned results from the json are formatted into a \link[tibble:tibble]{tibble::tibble} with only
 the following values:
 \itemize{
 \item item url

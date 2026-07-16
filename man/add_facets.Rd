@@ -7,13 +7,13 @@
 add_facets(req, facets)
 }
 \arguments{
-\item{req}{An \link{httr2} request, typically created using \link{create_basic_loc_request}.}
+\item{req}{An \link[httr2:httr2-package]{httr2::httr2} request, typically created using \link{create_basic_loc_request}.}
 
 \item{facets}{A vector of named character string. The name should provide the
 facet name and the character string should indicate the value.}
 }
 \value{
-An \link{httr2} request that can be further modified or sent.
+An \link[httr2:httr2-package]{httr2::httr2} request that can be further modified or sent.
 }
 \description{
 This function is meant to be applied to the result of a \link{create_basic_loc_request}

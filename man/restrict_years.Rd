@@ -7,14 +7,14 @@
 restrict_years(req, year_start, year_end)
 }
 \arguments{
-\item{req}{An \link{httr2} request, typically created using \link{create_basic_loc_request}.}
+\item{req}{An \link[httr2:httr2-package]{httr2::httr2} request, typically created using \link{create_basic_loc_request}.}
 
 \item{year_start}{An integer giving the starting year for the search.}
 
 \item{year_end}{An integer giving the end year for the search.}
 }
 \value{
-An \link{httr2} request that can be further modified or sent.
+An \link[httr2:httr2-package]{httr2::httr2} request that can be further modified or sent.
 }
 \description{
 This function is meant to be applied to the result of a \link{create_basic_loc_request}

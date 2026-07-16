@@ -21,11 +21,11 @@ provided, defaults to latest date of 1963.}
 \item{...}{Additional parameters that are passed on to \link{create_basic_loc_request}.}
 }
 \value{
-a \link{tibble} of items, with one item per row.
+a \link[tibble:tibble]{tibble::tibble} of items, with one item per row.
 }
 \description{
 Retrieve all items from a \emph{Chronicling America} search and place them into a
-\link{tibble} dataset.
+\link[tibble:tibble]{tibble::tibble} dataset.
 }
 \details{
 It is best to use year restrictions and/or facets to reduce the total volume
@@ -35,7 +35,7 @@ parameter from its default of 20 to reduce the problem of "deep paging"
 across results and reduce the overall number of requests. The \code{items_page}
 cannot be larger than 1000. A value of 500 often works well.
 
-The returned results from the json are formatted into a \link{tibble} with only
+The returned results from the json are formatted into a \link[tibble:tibble]{tibble::tibble} with only
 the following values:
 \itemize{
 \item item url
