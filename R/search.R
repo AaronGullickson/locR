@@ -338,9 +338,10 @@ create_basic_loc_request <- function(query,
                          sp = 1,
                          fo = "json",
                          .multi = function(x) { paste(x, collapse = "%20") }) |>
-    httr2::req_retry(max_tries = retries,
-                     is_transient = \(resp) httr2::resp_status(resp)
-                     %in% c(429, 500, 502, 503, 520, 522)) |>
+    httr2::req_retry(
+      max_tries = retries,
+      is_transient = \(resp) httr2::resp_status(resp) %in% TRANSIENT_CODES
+    ) |>
     httr2::req_throttle(rate = throttle_rate)
 
   return(req)
