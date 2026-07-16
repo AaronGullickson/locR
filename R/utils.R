@@ -35,32 +35,22 @@ process_results <- function(r) {
 # process a single row of results from the json
 process_row <- function(row, ...) {
 
-  county <- NA
-  if(length(row$location_county) > 0) {
-    county <- row$location_county[[1]]
-  }
-  state <- NA
-  if(length(row$location_state) > 0) {
-    state <- row$location_state[[1]]
-  }
-  country <- NA
-  if(length(row$location_country) > 0) {
-    country <- row$location_country[[1]]
-  }
-
   tibble::tibble(item_url = row$id,
          date = row$date,
          publication = combine_list(row$partof_title),
          languages = combine_list(row$language),
-         county = county,
-         state = state,
-         country = country,
+         county = combine_list(row$location_county),
+         state = combine_list(row$location_state),
+         country = combine_list(row$location_country),
          url_snippet = row$word_coordinates_url)
 }
 
 # collapse a list of character strings into a single comma separated
 # character string
 combine_list <- function(x) {
+  if(purrr::is_empty(x)) {
+    return(NA)
+  }
   paste(x, collapse = ", ")
 }
 
