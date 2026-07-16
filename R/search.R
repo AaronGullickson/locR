@@ -422,3 +422,40 @@ restrict_years <- function(req, year_start, year_end) {
   req |>
     httr2::req_url_query(dates = paste(year_start, year_end, sep = "/"))
 }
+
+# retrieve the snippet from the URL provided in the response
+# Currently I am no longer using this because I don't want to make a separate
+# request for each row within the existing request, but it could be re-used to
+# pull snippets from a sample or the full data later.
+
+#' Retrieve the relevant snippet from a search for a given URL
+#'
+#' @description
+#'
+#' Each item is returned with a url to the relevant snippet for the searched
+#' text but not the snippet itself. This function will retrieve the snippet
+#' text from the API
+#'
+#' @details
+#'
+#' The url uses the Text Services API to extract the relevant snippet. The
+#' throttle speed for this service is 150 request/60 seconds.
+#'
+#' @param url A character string of the URL for the snippet
+#'
+#' @returns An snippet of text as a character string.
+#'
+#' @export
+retrieve_snippet <- function(url) {
+
+  httr2::request(url) |>
+    httr2::req_retry(
+      max_tries = 30,
+      is_transient = \(resp) httr2::resp_status(resp) %in% TRANSIENT_CODES
+    ) |>
+    httr2::req_throttle(rate = 150 / 60) |>
+    httr2::req_perform() |>
+    httr2::resp_body_json() |>
+    purrr::pluck(1, "relevant_snippet", .default = NA_character_)
+
+}

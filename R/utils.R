@@ -52,6 +52,7 @@ process_row <- function(row, ...) {
     county = combine_list(row$location_county),
     state = combine_list(row$location_state),
     country = combine_list(row$location_country),
+    description = combine_list(row$description),
     url_snippet = row$word_coordinates_url
   )
 }
@@ -63,24 +64,4 @@ combine_list <- function(x) {
     return(NA)
   }
   paste(x, collapse = ", ")
-}
-
-# retrieve the snippet from the URL provided in the response
-# Currently I am no longer using this because I don't want to make a separate
-# request for each row within the existing request, but it could be re-used to
-# pull snippets from a sample or the full data later.
-retrieve_snippet <- function(url) {
-
-  response <- httr2::request(url) |>
-    httr2::req_retry(
-      max_tries = 30,
-      is_transient = \(resp) httr2::resp_status(resp) %in% TRANSIENT_CODES
-    ) |>
-    httr2::req_throttle(rate = 80 / 60) |>
-    httr2::req_perform() |>
-    httr2::resp_body_json()
-
-
-  return(response[[1]]$relevant_snippet)
-
 }
