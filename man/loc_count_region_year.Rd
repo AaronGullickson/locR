@@ -44,7 +44,7 @@ District of Columbia.
 }
 \examples{
 
-loc_count_state_year("banana", year_start = 1910, year_end = 1915,
+loc_count_region_year("banana", year_start = 1910, year_end = 1915,
                  facets = c(language = "english"), items_page = 5)
 
 }
