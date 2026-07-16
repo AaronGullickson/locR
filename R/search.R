@@ -325,7 +325,7 @@ loc_sample_pages <- function(query, n_sample_year = 100,
 create_basic_loc_request <- function(query,
                                      items_page = 20,
                                      combine_type = "OR",
-                                     throttle_rate = 80 / 60,
+                                     throttle_rate = 20 / 60,
                                      retries = 10) {
 
   req <- httr2::request(BASE_URL) |>
