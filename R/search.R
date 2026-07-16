@@ -43,9 +43,9 @@ loc_count_state_year <- function(query, year_start = 1756, year_end = 1963,
 
   full_count <- NULL
 
-  for (state in STATES) {
+  for(state in STATES) {
     cat("Searching", query, "in", state, "\n")
-    for (year in year_start:year_end) {
+    for(year in year_start:year_end) {
       cat("\t", year, "\n")
       facets["location_state"] <- state
       response <- req |>
@@ -156,7 +156,7 @@ loc_search_pages <- function(query, year_start = 1756, year_end = 1963,
   while (page <= pages_total) {
     cat("\t\tretreiving page", paste(page, pages_total, sep = "/"), "\n")
     response <- req |>
-      httr2::req_url_query(sp = page, at = "results") |>
+      httr2::req_url_query(sp = page) |>
       httr2::req_perform()
     page_content <- response |>
       httr2::resp_body_json()
