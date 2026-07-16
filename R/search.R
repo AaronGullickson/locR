@@ -265,7 +265,7 @@ loc_sample_pages <- function(query, n_sample_page = 10,
     # loop through pages and get the data
     year_results <- NULL
     for(page in pages_sampled) {
-      cat("\t\tretreiving page", page, "\n")
+      cat("\t\tretrieving page", page, "\n")
       response <- req |>
         restrict_years(year, year) |>
         httr2::req_url_query(sp = page) |>
