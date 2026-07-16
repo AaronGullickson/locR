@@ -7,7 +7,7 @@
 #' @details
 #'
 #' This function will simply count the frequency (number of results) for a given
-#' search across states and years, returning a [tibble] of those frequencies.
+#' search across region (North/South) and years, returning a [tibble] of those frequencies.
 #' If the user would prefer to get actual search items, they should use [loc_search_pages]
 #' instead.
 #'
@@ -35,21 +35,19 @@
 #'                  facets = c(language = "english"), items_page = 5)
 #'
 #' @export
-loc_count_state_year <- function(query, year_start = 1756, year_end = 1963,
-                                 facets = NULL, ...) {
+loc_count_region_year <- function(query, year_start = 1756, year_end = 1963,
+                                  facets = NULL, ...) {
 
   req <- create_basic_loc_request(query, ...) |>
     httr2::req_url_query(at = "pagination")
 
   full_count <- NULL
 
-  for(state in STATES) {
-    cat("Searching", query, "in", state, "\n")
-    for(year in year_start:year_end) {
-      cat("\t", year, "\n")
-      facets["location_state"] <- state
+  for(year in year_start:year_end) {
+    cat("\t", year, "\n")
+    full_count <- purrr::imap_dfr(REGIONS, \(states, region) {
       response <- req |>
-        add_facets(facets) |>
+        httr2::req_url_query(location_state = paste(states, collapse = "!")) |>
         restrict_years(year, year) |>
         httr2::req_perform()
 
@@ -58,9 +56,9 @@ loc_count_state_year <- function(query, year_start = 1756, year_end = 1963,
 
       n <- content$pagination$of
 
-      full_count <- full_count |>
-        dplyr::bind_rows(tibble::tibble(state, year, n))
-    }
+      dplyr::bind_rows(tibble::tibble(region, year, n))
+    }) |>
+      bind_rows(full_count)
   }
 
   return(full_count)

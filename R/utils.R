@@ -12,6 +12,14 @@ STATES <- c("alabama", "alaska", "arizona", "arkansas", "california",
             "texas", "utah", "vermont", "virginia", "washington",
             "west virginia", "wisconsin", "wyoming")
 
+SOUTH <- c("alabama", "arkansas", "district of columbia", "florida",
+           "georgia", "louisiana", "mississippi", "missouri", "north carolina",
+           "south carolina", "tennessee", "texas", "virginia", "west virginia")
+
+NORTH <- STATES[!(STATES %in% SOUTH)]
+
+REGIONS <- list(North = NORTH, South = SOUTH)
+
 TRANSIENT_CODES <- c(
   408,  # Request Timeout
   425,  # Too Early (sometimes transient with proxies/CDNs)
