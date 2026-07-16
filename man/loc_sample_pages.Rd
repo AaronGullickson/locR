@@ -6,7 +6,7 @@
 \usage{
 loc_sample_pages(
   query,
-  n_sample_year = 100,
+  n_sample_page = 10,
   year_start = 1756,
   year_end = 1963,
   facets = NULL,
@@ -17,9 +17,11 @@ loc_sample_pages(
 \item{query}{Either a character string or a vector of character strings used
 to search pages. The format here should be identical to \link{create_basic_loc_request}.}
 
-\item{n_sample_year}{The number of items to sample each year. If the number of
-items returned from the search in a given year is below this number, the full
-number of items will be kept.}
+\item{n_sample_page}{The number of pages of items to sample each year. Combined
+with \code{items_page} will give the sample size of items per year. If the number of
+pages returned from the search in a given year is below this number, the full
+number of items will be kept. Only full pages are sampled, so the last page
+is ignored.}
 
 \item{year_start}{An integer giving the starting year for the search. If not
 provided, defaults to earliest date of 1756.}
@@ -43,8 +45,9 @@ place them into a \link[tibble:tibble]{tibble::tibble} dataset.
 \details{
 For very large searches, this function will sample the full results including
 a text snippet. Results are sampled by year, so that a consistent number of
-items are provided by year. Weights are included in the final result to
-account for the sampling procedure.
+items are provided by year. Additionally, sampling is done by whole pages,
+so it constitues a form of cluster sampling. Weights and cluster ids are
+included in the final result to account for the sampling procedure.
 
 It is best to use year restrictions and/or facets to reduce the total volume
 of the search. Searches with more than 100,000 total items will likely be

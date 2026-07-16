@@ -179,8 +179,9 @@ loc_search_pages <- function(query, year_start = 1756, year_end = 1963,
 #'
 #' For very large searches, this function will sample the full results including
 #' a text snippet. Results are sampled by year, so that a consistent number of
-#' items are provided by year. Weights are included in the final result to
-#' account for the sampling procedure.
+#' items are provided by year. Additionally, sampling is done by whole pages,
+#' so it constitues a form of cluster sampling. Weights and cluster ids are
+#' included in the final result to account for the sampling procedure.
 #'
 #' It is best to use year restrictions and/or facets to reduce the total volume
 #' of the search. Searches with more than 100,000 total items will likely be
@@ -201,9 +202,11 @@ loc_search_pages <- function(query, year_start = 1756, year_end = 1963,
 #' @param query Either a character string or a vector of character strings used
 #' to search pages. The format here should be identical to [create_basic_loc_request].
 #'
-#' @param n_sample_year The number of items to sample each year. If the number of
-#' items returned from the search in a given year is below this number, the full
-#' number of items will be kept.
+#' @param n_sample_page The number of pages of items to sample each year. Combined
+#' with `items_page` will give the sample size of items per year. If the number of
+#' pages returned from the search in a given year is below this number, the full
+#' number of items will be kept. Only full pages are sampled, so the last page
+#' is ignored.
 #'
 #' @param year_start An integer giving the starting year for the search. If not
 #' provided, defaults to earliest date of 1756.
@@ -225,13 +228,13 @@ loc_search_pages <- function(query, year_start = 1756, year_end = 1963,
 #'                  facets = c(language = "english"))
 #'
 #' @export
-loc_sample_pages <- function(query, n_sample_year = 100,
+loc_sample_pages <- function(query, n_sample_page = 10,
                              year_start = 1756, year_end = 1963,
                              facets = NULL,
                              ...) {
 
   # force items_page to 1 for sampling
-  req <- create_basic_loc_request(query, items_page = 1, ...) |>
+  req <- create_basic_loc_request(query, ...) |>
     add_facets(facets)
 
   # NULL object for later search results
@@ -248,14 +251,15 @@ loc_sample_pages <- function(query, n_sample_year = 100,
       httr2::resp_body_json()
 
     n_pages <- content$pagination$total
+    n_items <- content$pagination$of
 
     # if the number of available pages is less than or equal to our sample, then
     # we just use everything, otherwise we sample
-    pages_sampled <- 1:n_pages
-    if(n_sample_year < n_pages) {
+    # also we don't sample the last partial page because of issues
+    pages_sampled <- 1:(n_pages - 1)
+    if(n_sample_page <= n_pages) {
       # we can't sample beyond 100K, so max it there unfortunately
-      pages_sampled <- sample(1:(min(n_pages, 100000)),
-                              n_sample_year, replace = FALSE)
+      pages_sampled <- sample(pages_sampled, n_sample_page, replace = FALSE)
     }
 
     # loop through pages and get the data
@@ -264,16 +268,17 @@ loc_sample_pages <- function(query, n_sample_year = 100,
       cat("\t\tretreiving page", page, "\n")
       response <- req |>
         restrict_years(year, year) |>
-        httr2::req_url_query(sp = page, at = "results") |>
+        httr2::req_url_query(sp = page) |>
         httr2::req_perform()
       page_content <- response |>
         httr2::resp_body_json()
       year_results <- process_results(page_content$results) |>
+        dplyr::mutate(cluster_id = paste(year, page, sep = ".")) |>
         dplyr::bind_rows(year_results)
     }
 
     # add weights (inverse of probability of being sampled)
-    year_results$weight <- n_pages/nrow(year_results)
+    year_results$weight <- n_items/nrow(year_results)
     search_results <- year_results |>
       dplyr::bind_rows(search_results)
   }
