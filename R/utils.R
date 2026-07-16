@@ -35,14 +35,17 @@ process_results <- function(r) {
 # process a single row of results from the json
 process_row <- function(row, ...) {
 
-  tibble::tibble(item_url = row$id,
-         date = row$date,
-         publication = combine_list(row$partof_title),
-         languages = combine_list(row$language),
-         county = combine_list(row$location_county),
-         state = combine_list(row$location_state),
-         country = combine_list(row$location_country),
-         url_snippet = row$word_coordinates_url)
+  tibble::tibble(
+    item_url = row$id,
+    date = row$date,
+    publication = combine_list(row$partof_title),
+    pub_id = combine_list(row$number_lccn),
+    languages = combine_list(row$language),
+    county = combine_list(row$location_county),
+    state = combine_list(row$location_state),
+    country = combine_list(row$location_country),
+    url_snippet = row$word_coordinates_url
+  )
 }
 
 # collapse a list of character strings into a single comma separated
