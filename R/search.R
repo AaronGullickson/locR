@@ -144,24 +144,27 @@ loc_search_pages <- function(query, year_start = 1756, year_end = 1963,
     # TODO: stop and print warning
   }
 
-  cat("\tTotal of ", results_total, "results on", pages_total, "page(s)\n")
+  cat("\tApproximate total of ", results_total, "results on", pages_total, "page(s)\n")
 
-  # use first page of results to start dataset
-  search_results <- process_results(page_content$results)
-
-  # turn the page
-  page <- 2
-
-  # while loop through pages and add results
-  while (page <= pages_total) {
-    cat("\t\tretreiving page", paste(page, pages_total, sep = "/"), "\n")
+  # loop through pages and add results - we don't trust initial totals
+  # and pagination, so keep cycling until I don't get a next
+  page <- 1
+  search_results <- NULL
+  repeat {
+    # get response
+    cat("\t\tretreiving page", page, "\n")
     response <- req |>
       httr2::req_url_query(sp = page) |>
       httr2::req_perform()
+    # get content
     page_content <- response |>
       httr2::resp_body_json()
     search_results <- process_results(page_content$results) |>
       dplyr::bind_rows(search_results)
+    # is there more?
+    if(is.null(page_content$pagination$`next`)) {
+      break
+    }
     page <- page + 1
   }
 
