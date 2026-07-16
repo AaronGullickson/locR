@@ -256,7 +256,7 @@ loc_sample_pages <- function(query, n_sample_page = 10,
     # if the number of available pages is less than or equal to our sample, then
     # we just use everything, otherwise we sample
     # also we don't sample the last partial page because of issues
-    pages_sampled <- 1:(n_pages - 1)
+    pages_sampled <- 1:max(1, (n_pages - 1))
     if(n_sample_page <= n_pages) {
       # we can't sample beyond 100K, so max it there unfortunately
       pages_sampled <- sample(pages_sampled, n_sample_page, replace = FALSE)
