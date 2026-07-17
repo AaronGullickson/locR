@@ -453,6 +453,7 @@ retrieve_snippet <- function(url) {
       max_tries = 30,
       is_transient = \(resp) httr2::resp_status(resp) %in% TRANSIENT_CODES
     ) |>
+    httr2::req_options(http_version = 1) |>
     httr2::req_throttle(rate = 150 / 60) |>
     httr2::req_perform() |>
     httr2::resp_body_json() |>
